@@ -1,0 +1,570 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:#0a0a0a;color:#e8e4d9;min-height:100vh}
+.wrap{background:#0a0a0a;min-height:100vh;padding:0}
+.hdr{background:#0d1117;border-bottom:1px solid #1a2433;padding:14px 20px;display:flex;align-items:center;gap:14px}
+.logo-box{background:linear-gradient(135deg,#1a3a5c,#0f6e56);width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#9FE1CB;letter-spacing:1px}
+.hdr-title{font-size:15px;font-weight:500;color:#e8e4d9}
+.hdr-sub{font-size:12px;color:#6b7280;margin-top:2px}
+.nav{display:flex;gap:0;border-bottom:1px solid #1a2433;padding:0 20px;background:#0d1117;overflow-x:auto}
+.nav-btn{padding:10px 16px;font-size:13px;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.nav-btn.active{color:#5DCAA5;border-bottom-color:#5DCAA5}
+.nav-btn:hover{color:#9FE1CB}
+.content{padding:16px 20px;max-width:1100px}
+.section{display:none}
+.section.active{display:block}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.card{background:#0f1923;border:1px solid #1a2433;border-radius:10px;padding:14px}
+.card-title{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.card-val{font-size:22px;font-weight:500;color:#e8e4d9}
+.card-sub{font-size:11px;color:#6b7280;margin-top:3px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
+.badge-green{background:#083d22;color:#5DCAA5}
+.badge-red{background:#3d0808;color:#f09595}
+.badge-yellow{background:#3d2b00;color:#FAC775}
+.badge-blue{background:#082340;color:#85B7EB}
+.chart-wrap{position:relative;width:100%;height:240px}
+.chart-wrap-lg{position:relative;width:100%;height:300px}
+.sec-hdr{font-size:13px;font-weight:500;color:#9FE1CB;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1a2433}
+.table{width:100%;border-collapse:collapse;font-size:12px}
+.table th{text-align:left;padding:6px 10px;color:#6b7280;font-weight:400;border-bottom:1px solid #1a2433}
+.table td{padding:6px 10px;border-bottom:1px solid #111820;color:#c9cfd8}
+.table tr:hover td{background:#121e2a}
+.row{display:flex;gap:12px;margin-bottom:14px}
+.row>.card{flex:1}
+.asset-btn{padding:6px 12px;border:1px solid #1a2433;border-radius:6px;background:#0f1923;color:#9FE1CB;font-size:12px;cursor:pointer;transition:all .2s}
+.asset-btn.active,.asset-btn:hover{background:#0F6E56;border-color:#1D9E75;color:#fff}
+.asset-sel{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #111820}
+.info-label{font-size:12px;color:#6b7280}
+.info-val{font-size:13px;color:#e8e4d9;font-weight:500}
+.hyp-box{border-radius:8px;padding:14px;margin-bottom:10px}
+.hyp-h0{background:#083d22;border:1px solid #0F6E56}
+.hyp-h1{background:#1a1208;border:1px solid #633806}
+.hyp-title{font-size:13px;font-weight:500;margin-bottom:6px}
+.hyp-text{font-size:12px;color:#9ca3af;line-height:1.6}
+.result-box{background:#0d1117;border:1px solid #1a3a5c;border-radius:8px;padding:14px;margin-bottom:12px}
+.result-title{font-size:13px;font-weight:500;color:#85B7EB;margin-bottom:8px}
+.result-text{font-size:12px;color:#9ca3af;line-height:1.7}
+.prog-bar{height:6px;background:#1a2433;border-radius:3px;margin-top:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px}
+.obj-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #111820}
+.obj-num{width:26px;height:26px;border-radius:50%;background:#0F6E56;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;flex-shrink:0}
+.obj-text{font-size:12px;color:#9ca3af;line-height:1.6}
+.obj-status{font-size:11px;font-weight:500;margin-top:3px}
+.add-data-form{background:#0d1117;border:1px solid #1a2433;border-radius:10px;padding:16px;margin-bottom:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:8px;align-items:end;margin-bottom:10px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-label{font-size:11px;color:#6b7280}
+.form-input{background:#0a0a0a;border:1px solid #1a2433;border-radius:6px;padding:6px 10px;color:#e8e4d9;font-size:12px;width:100%}
+.form-input:focus{outline:none;border-color:#0F6E56}
+.btn-add{background:#0F6E56;border:none;border-radius:6px;padding:7px 14px;color:#fff;font-size:12px;cursor:pointer;white-space:nowrap}
+.btn-add:hover{background:#1D9E75}
+.previsao-box{background:#0f1923;border:1px solid #1a2433;border-radius:10px;padding:14px;margin-top:12px}
+.corr-matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:8px}
+.corr-cell{padding:8px 4px;text-align:center;border-radius:4px;font-size:11px}
+.footer-note{font-size:11px;color:#4b5563;margin-top:12px;padding-top:8px;border-top:1px solid #111820}
+</style>
+
+<div class="wrap">
+<div class="hdr">
+  <div class="logo-box">BOD<br>IVA</div>
+  <div>
+    <div class="hdr-title">BODIVA — Bolsa de Dívida e Valores de Angola</div>
+    <div class="hdr-sub">Dashboard de Eficiência de Mercado | Período 2022–2025 | Investigação Mestrado</div>
+  </div>
+  <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+    <span class="badge badge-yellow">Dados Reais</span>
+    <span style="font-size:11px;color:#4b5563">4 ativos | N=1561 obs.</span>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-btn active" onclick="showTab('resumo')">Visão Geral</div>
+  <div class="nav-btn" onclick="showTab('resultados')">Resultados Econométricos</div>
+  <div class="nav-btn" onclick="showTab('hipoteses')">Hipóteses e Objetivos</div>
+  <div class="nav-btn" onclick="showTab('graficos')">Gráficos de Retornos</div>
+  <div class="nav-btn" onclick="showTab('correlacao')">Correlações e ACF</div>
+  <div class="nav-btn" onclick="showTab('previsao')">Previsão e Novos Dados</div>
+</div>
+
+<div class="content">
+
+<!-- TAB 1: VISÃO GERAL -->
+<div id="tab-resumo" class="section active">
+  <div class="sec-hdr">Síntese do Estudo — BODIVA (2022–2025)</div>
+  <div class="grid-4">
+    <div class="card"><div class="card-title">Ativos analisados</div><div class="card-val">4</div><div class="card-sub">BAI · BCG · BDV · ENS</div></div>
+    <div class="card"><div class="card-title">Observações totais</div><div class="card-val">1.561</div><div class="card-sub">Retornos logarítmicos</div></div>
+    <div class="card"><div class="card-title">Período de análise</div><div class="card-val">~3 anos</div><div class="card-sub">Jun 2022 – Ago 2025</div></div>
+    <div class="card"><div class="card-title">Veredicto de eficiência</div><div class="card-val" style="font-size:15px;color:#f09595">Ineficiente</div><div class="card-sub">Forma fraca rejeitada (3/4 ativos)</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="sec-hdr">Estatísticas Descritivas por Ativo</div>
+      <table class="table">
+        <thead><tr><th>Ativo</th><th>N</th><th>Média Rt</th><th>Desvio Padrão</th><th>Assimetria</th><th>Curtose</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-blue">BAIAAAAA</span></td><td>608</td><td>+0.199%</td><td>4.840%</td><td>-0.14</td><td>6.71</td></tr>
+          <tr><td><span class="badge badge-green">BCGAAAAA</span></td><td>577</td><td>+0.127%</td><td>3.906%</td><td>+0.80</td><td>7.50</td></tr>
+          <tr><td><span class="badge badge-yellow">BDVAAAAA</span></td><td>176</td><td>+0.142%</td><td>3.006%</td><td>+2.20</td><td>18.73</td></tr>
+          <tr><td><span class="badge badge-red">ENSAAAAA</span></td><td>200</td><td>+0.154%</td><td>4.164%</td><td>+0.94</td><td>14.90</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="sec-hdr">Veredicto por Teste</div>
+      <table class="table">
+        <thead><tr><th>Teste</th><th>BAI</th><th>BCG</th><th>BDV</th><th>ENS</th></tr></thead>
+        <tbody>
+          <tr><td>ADF (Estac.)</td><td><span class="badge badge-green">✓</span></td><td><span class="badge badge-green">✓</span></td><td><span class="badge badge-green">✓</span></td><td><span class="badge badge-green">✓</span></td></tr>
+          <tr><td>Ljung-Box</td><td><span class="badge badge-red">Rejeita</span></td><td><span class="badge badge-yellow">Parcial</span></td><td><span class="badge badge-red">Rejeita</span></td><td><span class="badge badge-red">Rejeita</span></td></tr>
+          <tr><td>Variance Ratio</td><td><span class="badge badge-red">Rejeita RW</span></td><td><span class="badge badge-green">Não rejeita</span></td><td><span class="badge badge-red">Rejeita RW</span></td><td><span class="badge badge-red">Rejeita RW</span></td></tr>
+          <tr><td>AR(1) Sign.</td><td><span class="badge badge-red">Sig. (p&lt;.001)</span></td><td><span class="badge badge-green">Não sig.</span></td><td><span class="badge badge-green">Não sig.</span></td><td><span class="badge badge-red">Sig. (p=.002)</span></td></tr>
+          <tr><td>Conclusão</td><td><span class="badge badge-red">Ineficiente</span></td><td><span class="badge badge-green">Eficiente</span></td><td><span class="badge badge-red">Ineficiente</span></td><td><span class="badge badge-red">Ineficiente</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-hdr">Conclusão Geral — Resposta à Questão de Investigação</div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="flex:2">
+        <p style="font-size:13px;color:#9ca3af;line-height:1.8;margin-bottom:10px">
+          Com base na análise econométrica dos quatro ativos negociados na BODIVA no período 2022–2025, os resultados indicam que o mercado de ações angolano <strong style="color:#f09595">não apresenta eficiência na forma fraca</strong> na maioria dos ativos analisados. Três dos quatro ativos (BAIAAAAA, BDVAAAAA e ENSAAAAA) revelam autocorrelação estatisticamente significativa nos retornos, rejeitando a hipótese de passeio aleatório. Apenas o ativo BCGAAAAA apresenta comportamento consistente com a hipótese de mercado eficiente na forma fraca. A <strong style="color:#5DCAA5">hipótese alternativa H1</strong> — de ineficiência do mercado — é confirmada para o conjunto global da BODIVA.
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="badge badge-red">H0 Rejeitada (3/4 ativos)</span>
+          <span class="badge badge-green">H1 Confirmada</span>
+          <span class="badge badge-yellow">Mercado em desenvolvimento</span>
+        </div>
+      </div>
+      <div style="flex:1;background:#0d1117;border-radius:8px;padding:12px;border:1px solid #1a3a5c">
+        <div style="font-size:11px;color:#6b7280;margin-bottom:6px">Grau de ineficiência</div>
+        <div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:#85B7EB">BAI</span><span style="color:#f09595">Alta</span></div><div class="prog-bar"><div class="prog-fill" style="width:78%;background:#E24B4A"></div></div></div>
+        <div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:#85B7EB">BCG</span><span style="color:#5DCAA5">Baixa</span></div><div class="prog-bar"><div class="prog-fill" style="width:18%;background:#1D9E75"></div></div></div>
+        <div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:#85B7EB">BDV</span><span style="color:#f09595">Alta</span></div><div class="prog-bar"><div class="prog-fill" style="width:82%;background:#E24B4A"></div></div></div>
+        <div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:#85B7EB">ENS</span><span style="color:#FAC775">Moderada-Alta</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%;background:#EF9F27"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: RESULTADOS ECONOMÉTRICOS -->
+<div id="tab-resultados" class="section">
+  <div class="asset-sel">
+    <div class="asset-btn active" onclick="selAsset('BAI',this)">BAIAAAAA</div>
+    <div class="asset-btn" onclick="selAsset('BCG',this)">BCGAAAAA</div>
+    <div class="asset-btn" onclick="selAsset('BDV',this)">BDVAAAAA</div>
+    <div class="asset-btn" onclick="selAsset('ENS',this)">ENSAAAAA</div>
+  </div>
+  <div id="asset-details"></div>
+</div>
+
+<!-- TAB 3: HIPÓTESES E OBJETIVOS -->
+<div id="tab-hipoteses" class="section">
+  <div class="sec-hdr">Formulação das Hipóteses</div>
+  <div class="hyp-box hyp-h0">
+    <div class="hyp-title" style="color:#5DCAA5">H0 — Hipótese Nula (Eficiência)</div>
+    <div class="hyp-text">Os retornos dos ativos seguem um comportamento aleatório, não apresentando autocorrelação nem previsibilidade, sendo consistentes com a hipótese de mercado eficiente na forma fraca.</div>
+    <div style="margin-top:8px;display:flex;gap:6px">
+      <span class="badge badge-red">Rejeitada para BAI</span>
+      <span class="badge badge-green">Não rejeitada para BCG</span>
+      <span class="badge badge-red">Rejeitada para BDV</span>
+      <span class="badge badge-red">Rejeitada para ENS</span>
+    </div>
+  </div>
+  <div class="hyp-box hyp-h1">
+    <div class="hyp-title" style="color:#FAC775">H1 — Hipótese Alternativa (Ineficiência)</div>
+    <div class="hyp-text">Os retornos dos ativos apresentam dependência temporal e previsibilidade, rejeitando a hipótese de passeio aleatório e indicando ineficiência do mercado.</div>
+    <div style="margin-top:8px"><span class="badge badge-green">CONFIRMADA para o mercado global (3/4 ativos)</span></div>
+  </div>
+
+  <div class="sec-hdr" style="margin-top:14px">Objetivos Específicos — Estado de Concretização</div>
+  <div class="card">
+    <div class="obj-row">
+      <div class="obj-num">1</div>
+      <div>
+        <div class="obj-text">Recolher e organizar os preços históricos dos activos negociados na BODIVA no período de 2022 a 2025, bem como calcular os respectivos retornos logarítmicos.</div>
+        <div class="obj-status" style="color:#5DCAA5">Concluído — 4 ativos, 1.561 observações de retornos logarítmicos calculados. Período: Jun 2022 – Ago 2025.</div>
+      </div>
+    </div>
+    <div class="obj-row">
+      <div class="obj-num">2</div>
+      <div>
+        <div class="obj-text">Verificar a existência de autocorrelação nos retornos dos activos, com o objectivo de identificar dependência temporal e possíveis padrões de previsibilidade.</div>
+        <div class="obj-status" style="color:#5DCAA5">Concluído — Testes de autocorrelação (ACF, Ljung-Box) realizados para todos os ativos. BAI e ENS apresentam autocorrelação significativa nos lags 1 e 5.</div>
+      </div>
+    </div>
+    <div class="obj-row">
+      <div class="obj-num">3</div>
+      <div>
+        <div class="obj-text">Integrar os resultados dos testes econométricos para determinar se o mercado de ações angolano apresenta eficiência na forma fraca.</div>
+        <div class="obj-status" style="color:#FAC775">Concluído — A integração de ADF, Ljung-Box, Variance Ratio e AR(1) confirma que o mercado não é eficiente na forma fraca em 3 dos 4 ativos analisados.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-hdr" style="margin-top:14px">Objetivo Geral</div>
+  <div class="result-box">
+    <div class="result-title">Avaliar a eficiência do mercado de acções angolano, representado pela BODIVA</div>
+    <div class="result-text">
+      O objetivo foi integralmente cumprido. A análise econométrica multidimensional — abrangendo testes de estacionaridade (ADF), autocorrelação (Ljung-Box e ACF), razão de variância (Lo-MacKinlay) e modelos autorregressivos AR(1) — permitiu concluir que a BODIVA, no período 2022–2025, apresenta evidências de ineficiência na forma fraca. Esta conclusão tem implicações relevantes para investidores, reguladores e decisores políticos. O mercado encontra-se numa fase de consolidação onde os preços não refletem integralmente a informação disponível, o que cria oportunidades de arbitragem mas também evidencia a necessidade de maior liquidez, transparência e participação.
+    </div>
+  </div>
+
+  <div class="sec-hdr" style="margin-top:14px">Enquadramento — Teoria do Passeio Aleatório</div>
+  <div class="grid-3">
+    <div class="card"><div class="card-title">Random Walk verificado</div><div style="font-size:13px;color:#5DCAA5;font-weight:500">BCG (parcialmente)</div><div class="card-sub" style="margin-top:4px">VR≈1, AR(1) não sig., LB p&gt;.05 nos primeiros lags</div></div>
+    <div class="card"><div class="card-title">Previsibilidade detectada</div><div style="font-size:13px;color:#f09595;font-weight:500">BAI · BDV · ENS</div><div class="card-sub" style="margin-top:4px">VR&lt;1 significativo, autocorrelação nos retornos</div></div>
+    <div class="card"><div class="card-title">Distribuição dos retornos</div><div style="font-size:13px;color:#FAC775;font-weight:500">Não-normal (todos)</div><div class="card-sub" style="margin-top:4px">Curtose elevada, Jarque-Bera altamente significativo</div></div>
+  </div>
+</div>
+
+<!-- TAB 4: GRÁFICOS -->
+<div id="tab-graficos" class="section">
+  <div class="asset-sel">
+    <div class="asset-btn active" onclick="selChart('BAI',this)">BAIAAAAA</div>
+    <div class="asset-btn" onclick="selChart('BCG',this)">BCGAAAAA</div>
+    <div class="asset-btn" onclick="selChart('BDV',this)">BDVAAAAA</div>
+    <div class="asset-btn" onclick="selChart('ENS',this)">ENSAAAAA</div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="sec-hdr">Série de Preços (AOA)</div>
+      <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr">Retornos Logarítmicos</div>
+      <div class="chart-wrap"><canvas id="retChart"></canvas></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="sec-hdr">Histograma de Retornos</div>
+      <div class="chart-wrap"><canvas id="histChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr">Volume Médio por Ano</div>
+      <div class="chart-wrap"><canvas id="volChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: CORRELAÇÕES -->
+<div id="tab-correlacao" class="section">
+  <div class="sec-hdr">Função de Autocorrelação (ACF) — Retornos por Ativo</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="sec-hdr">BAIAAAAA — ACF (Lags 1-10)</div>
+      <div class="chart-wrap"><canvas id="acfBAI"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr">BCGAAAAA — ACF (Lags 1-10)</div>
+      <div class="chart-wrap"><canvas id="acfBCG"></canvas></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="sec-hdr">BDVAAAAA — ACF (Lags 1-10)</div>
+      <div class="chart-wrap"><canvas id="acfBDV"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr">ENSAAAAA — ACF (Lags 1-10)</div>
+      <div class="chart-wrap"><canvas id="acfENS"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sec-hdr" style="margin-top:4px">Variance Ratio — Desvio de VR=1 (Eficiência)</div>
+  <div class="card">
+    <div class="chart-wrap"><canvas id="vrChart"></canvas></div>
+  </div>
+
+  <div class="sec-hdr" style="margin-top:4px">Resultados Ljung-Box (p-values)</div>
+  <div class="card">
+    <table class="table">
+      <thead><tr><th>Ativo</th><th>Lag 1</th><th>Lag 2</th><th>Lag 5</th><th>Lag 10</th><th>Decisão</th></tr></thead>
+      <tbody>
+        <tr><td>BAIAAAAA</td><td><span style="color:#f09595">0.0000</span></td><td><span style="color:#f09595">0.0000</span></td><td><span style="color:#f09595">0.0000</span></td><td><span style="color:#f09595">0.0000</span></td><td><span class="badge badge-red">Rejeita H0</span></td></tr>
+        <tr><td>BCGAAAAA</td><td><span style="color:#5DCAA5">0.9889</span></td><td><span style="color:#5DCAA5">0.8963</span></td><td><span style="color:#5DCAA5">0.0991</span></td><td><span style="color:#FAC775">0.0306</span></td><td><span class="badge badge-green">Não rejeita (geral)</span></td></tr>
+        <tr><td>BDVAAAAA</td><td><span style="color:#5DCAA5">0.4931</span></td><td><span style="color:#5DCAA5">0.2679</span></td><td><span style="color:#f09595">0.0138</span></td><td><span style="color:#f09595">0.0014</span></td><td><span class="badge badge-red">Rejeita H0 (lag≥5)</span></td></tr>
+        <tr><td>ENSAAAAA</td><td><span style="color:#f09595">0.0040</span></td><td><span style="color:#f09595">0.0114</span></td><td><span style="color:#f09595">0.0002</span></td><td><span style="color:#f09595">0.0016</span></td><td><span class="badge badge-red">Rejeita H0</span></td></tr>
+      </tbody>
+    </table>
+    <div class="footer-note">p &lt; 0.05 indica autocorrelação significativa — rejeição da hipótese de independência dos retornos (ineficiência de mercado)</div>
+  </div>
+</div>
+
+<!-- TAB 6: PREVISÃO -->
+<div id="tab-previsao" class="section">
+  <div class="sec-hdr">Adicionar Novo Dado ao Mercado</div>
+  <div class="add-data-form">
+    <div class="form-row">
+      <div class="form-group"><div class="form-label">Ativo</div><select class="form-input" id="newAsset"><option>BAIAAAAA</option><option>BCGAAAAA</option><option>BDVAAAAA</option><option>ENSAAAAA</option></select></div>
+      <div class="form-group"><div class="form-label">Data</div><input class="form-input" type="date" id="newDate" value="2025-09-01"></div>
+      <div class="form-group"><div class="form-label">Preço de Fecho (AOA)</div><input class="form-input" type="number" id="newPrice" placeholder="ex: 91000"></div>
+      <div class="form-group"><div class="form-label">Nº de Negócios</div><input class="form-input" type="number" id="newNeg" placeholder="ex: 15"></div>
+      <button class="btn-add" onclick="addData()">Adicionar</button>
+    </div>
+    <div id="addedData" style="font-size:12px;color:#5DCAA5;margin-top:4px"></div>
+  </div>
+
+  <div class="sec-hdr">Previsão por Modelo AR(1)</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="info-row"><div class="info-label">Ativo selecionado para previsão</div><select class="form-input" id="prevAsset" onchange="updatePrevisao()" style="width:auto;padding:4px 8px"><option>BAIAAAAA</option><option>BCGAAAAA</option><option>BDVAAAAA</option><option>ENSAAAAA</option></select></div>
+      <div class="info-row"><div class="info-label">Último preço observado</div><div class="info-val" id="lastPrice">—</div></div>
+      <div class="info-row"><div class="info-label">Coef. AR(1) [beta]</div><div class="info-val" id="arBeta">—</div></div>
+      <div class="info-row"><div class="info-label">p-value AR(1)</div><div class="info-val" id="arPval">—</div></div>
+      <div class="info-row"><div class="info-label">Retorno previsto (próximo período)</div><div class="info-val" id="prevRet" style="color:#5DCAA5">—</div></div>
+      <div class="info-row"><div class="info-label">Preço estimado (próximo período)</div><div class="info-val" id="prevPrice" style="color:#5DCAA5">—</div></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr">Evolução e Previsão (últimos 30 + 1 próximo)</div>
+      <div class="chart-wrap"><canvas id="prevChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="previsao-box">
+    <div class="sec-hdr">Dados Adicionados na Sessão</div>
+    <table class="table" id="newDataTable">
+      <thead><tr><th>Ativo</th><th>Data</th><th>Preço</th><th>Retorno Log.</th><th>Nº Negócios</th></tr></thead>
+      <tbody><tr><td colspan="5" style="color:#4b5563;text-align:center;padding:12px">Nenhum dado adicionado ainda</td></tr></tbody>
+    </table>
+    <div class="footer-note">Os novos dados são integrados nas análises desta sessão para controlo e acompanhamento futuro.</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const ASSETS = {
+  BAI:{n:608,mean:0.001991,std:0.04840,skew:-0.1356,kurt:6.71,jb:1142.7,adf_stat:-9.29,adf_pval:0.005,
+    acf:[-0.2106,-0.0051,0.0474,0.0015,0.1477,0.0047,-0.0040,0.0228,0.0712,-0.0981],
+    lb:{1:[27.1,0.000],2:[27.1,0.000],5:[41.9,0.000],10:[51.4,0.000]},
+    vr:{2:[0.778,-5.48,0.000],4:[0.629,-4.90,0.000],8:[0.651,-2.92,0.004],16:[0.532,-2.62,0.009]},
+    ar:{beta:-0.2109,se:0.0393,t:-5.36,p:0.000,r2:0.0453,dw:2.042},
+    prices:[22704,25500,28350,28400,29000,29300,28000,28500,31250,31850,28100,28500,30645,28400,30000,29000,28000,25000,28000,28899,29000,28000,25000,28000,22000,24000,27400,26000,22000,24000,27500,29000,30000,31000,29000,30990,30645,35000,35000,34500,35000,36000,30000,34000,36000,40000,39975,36123,40000,39975,35000,40000,39975,50000,51500,53000,52000,51500,51000,50000,52550,48000,55400,54000,52500,53000,51000,50000,54000,53000,57000,57500,58500,62000,63000,65000,62000,65000,57500,50000,57500,54000,57000,62000,63000,62000,62500,60000,58400,58500,62000,63000,64000,63500,62000,63000,62212,63000,62000,61100,61200,61000,60990,60989,60990,60985,60985,60990,61890,61500,62000,60985,61000,60985,60990,60000,62500,62000,61200,61200,61000,61200,60000,58500,54000,58500,58500,62500,60000,55000,53000,50000,54985,54000,51000,54000,55000,55000,54996,54996,54600,55000,54000,54250,54250,54078,54985,54000,47000,48000,53000,53000,55000,50000,50000,54999,52000,52000,55100,56000,55500,55500,55000,54990,54990,56500,56000,55980,55990,55989,55989,55980,55000,55000,54500,54500,54000,55950,55950,55995,55000,56490,59500,59500,59000,59000,59000,59980,58800,58700,59900,55000,57750,54900,55000,59500,59400,59300,59500,59500,59900,59800,59900,59990,59990,59990,58800,56000,59990,59500,59290,59290,59290,59990,59990,59500,59990,60000,60000,60700,60700,60650,60650,60800,60500,60000,60000,60000,60500,61000,61100,62750,63000,63450,65000,64000,64000,64000,65000,67000,67000,66800,65500,66000,66000,65950,65950,65950,66000,71625,70000,72000,72000,72000,72000,72000,72000,75000,75000,78000,80000,80000,80000,80000,80000,81000,81000,90000,90000,89000,89000,89000,89000,88950,88450,89000,89000,90000,90000,89000,89000,90000,89500,90000,85000,89000,85000,88000,85000,85000,85500,85000,86000,88000,86000,75000,87000,80000,85000,83000,82060,81000,82800,81000,80000,80000,75000,80000,76087,79000,78999,78500,77900,73000,76200]},
+  BCG:{n:577,mean:0.001272,std:0.03906,skew:0.7964,kurt:7.50,jb:1412.6,adf_stat:-12.81,adf_pval:0.005,
+    acf:[0.0006,0.0194,0.0707,0.1025,0.0010,-0.0479,0.0339,-0.0784,0.0920,0.0018],
+    lb:{1:[0.0,0.989],2:[0.2,0.896],5:[9.3,0.099],10:[19.9,0.031]},
+    vr:{2:[0.993,-0.18,0.859],4:[0.947,-0.68,0.494],8:[0.784,-1.76,0.079],16:[0.652,-1.90,0.057]},
+    ar:{beta:0.0006,se:0.0415,t:0.014,p:0.989,r2:0.000,dw:1.995},
+    prices:[6000,7200,8000,10000,12000,14400,16000,17000,17555,17000,16990,16700,16700,16800,16800,16000,15895,15700,15050,15000,15000,15000,15000,15000,15000,15500,14990,14990,14990,14990,15000,15000,15000,15000,14990,14500,13900,13890,13890,13900,14000,14000,14000,14000,14000,14000,14000,11749,11749,11749,11500,11749,11750,11750,11750,11749,11749,11749,11749,11750,11750,11749,10500,10500,11000,11000,10500,11000,10500,10501,11000,11000,10750,10750,10500,10500,10300,10300,10250,10250,10095,10000,10000,10100,10100,10100,10090,10090,9500,10000,10100,10100,9950,9000,9900,9850,9000,9000,9850,9750,9750,9750,9750,10000,10000,10000,10000,10050,10500,10500,10495,10495,11000,11000,10995,10500,10995,11000,10500,11000,11000,11000,11000,12000,11000,11000,11000,11498,11500,11998,12890,12900,13980,14000,14200,14200,15000,15050,15500,14500,15700,16000,17000,18000,18000,18000,18100,18000,17000,17000,17000,17000,17000,18000,18000,18000,18000,18500,18000,18000,18000,18770,18770,18770,18770,18770,18500,18800,19000,19400,19400,20000,20000,20000,20000,19900,20000,20000,20000,20000,21500,20000,23500,22949,23000,20000,22950,19000,18000,19000,18000,17500,17500,17000,17500,17000,17000,18000,18000,18000,18000,18000,18150,18000,18000,17000,17000,16000,16000,16000,15500,14990,15000,14990,13100,12000,14000,13000,15250,15250,15248,15250,15350,15350,15000,15000,15300,15250,15250,15375,15380,15250,15400,15400,15200,15900,16390,16500,16000,16000,16000,15000,15000,16000,16500,14500,15000,14495,14200,14500,14499,14500,14500,14000,14000,15000,15000,15500,14500,14500,15000,15000,15000,13000,13000,13500,12800,12800,12800,12799,12800,12502,13400,12600,13300,13300,13999,14100,14500,14400,14499,14500,14500,14665,14665,14640,14600,14500,15000,14999,14999,14999,15000,15000,15000,15000,16000,15600,16500,17000,17000,15000,14500,14950,14950,14995,14890,14890,14890,14690,14665,14500,14600,15600,15000,15000,15000,15000,15000,15000,16000,15900,15900,15900,15900,15900,15900,15900,15800,16000,15600,15600,15600,15600,15600,15600,15600,15600,15600,15600,15600,15600,15600,16950,16750,15000,15000,15999,16000,16500,15500,15990,16499,16200,16100,16000,16000,15626,15600,15700,15800,15100,15100,15099,15000,15050,15500,15500,15600,15580,15450,15500,15600,17500,17400,17499,15600,17496,15600,15600,15600,15600,15600,15600,15600,15600,15500,15500,15600,15600,15000,15450,15450,15580,15590,15000,15450,15580,15590,15400,15350,15600,15600]},
+  BDV:{n:176,mean:0.001421,std:0.03006,skew:2.20,kurt:18.73,jb:2715.3,adf_stat:-7.52,adf_pval:0.005,
+    acf:[-0.0512,-0.1096,0.0780,-0.1724,-0.1678,0.0821,-0.1710,0.0705,0.1360,-0.1324],
+    lb:{1:[0.5,0.493],2:[2.6,0.268],5:[14.3,0.014],10:[28.7,0.001]},
+    vr:{2:[0.785,-2.86,0.004],4:[0.538,-3.28,0.001],8:[0.293,-3.18,0.002],16:[0.173,-2.50,0.012]},
+    ar:{beta:-0.0512,se:0.0624,t:-0.82,p:0.413,r2:0.0039,dw:2.293},
+    prices:[16574,20637,25896,27700,26500,25999,24850,22200,23000,21900,22011,23500,23000,22900,22900,23000,23150,23400,23400,23400,23350,23350,23000,23300,23300,23000,23000,22500,22500,23000,23200,23300,23289,23200,22500,23000,23000,23400,23400,23400,23490,23500,24300,24350,23400,23400,24500,24675,24000,24000,24000,23500,23490,23450,23200,23435,23000,23400,23400,23400,23495,23500,23450,23450,23400,23400,23000,23000,23399,23399,22500,22800,22500,22800,22800,21050,22000,22500,23000,23100,23100,22258,22258,22800,22800,23000,23400,21500,23100,23100,22300,22200,22000,23000,23500,22950,22924,22995,22600,23000,22949,26500,26800,26500,27200,26800,26500]},
+  ENS:{n:200,mean:0.001539,std:0.04164,skew:0.9381,kurt:14.90,jb:1880.1,adf_stat:-5.67,adf_pval:0.005,
+    acf:[-0.2022,-0.0559,-0.1705,0.0248,0.2079,-0.0937,-0.0734,0.0432,-0.0626,-0.0323],
+    lb:{1:[8.3,0.004],2:[8.9,0.011],5:[24.0,0.000],10:[28.4,0.002]},
+    vr:{2:[0.724,-3.91,0.000],4:[0.330,-5.08,0.000],8:[0.296,-3.38,0.001],16:[0.209,-2.55,0.011]},
+    ar:{beta:-0.2024,se:0.0644,t:-3.14,p:0.002,r2:0.0478,dw:2.218},
+    prices:[15000,16000,16200,16200,17000,17999,18000,18000,18000,19000,19000,19000,19000,19000,20000,20000,22000,23000,18500,23000,23450,28000,22500,18000,18000,18000,15000,18000,18000,18000,18000,17000,16200,17000,17000,17000,17000,18300,18300,18500,19500,18899,18295,19000,19500,19500,19000,19000,19000,19000,19000,19000,18999,18998,18998,18998,18950,18999,18999,19000,19000,19000,19000,18950,18983,19000,19000,19000,19000,19000,19000,19000,19000,19000,19000,18400,18400,19000,18501,19000,19000,19000,18990,19000,19000,19000,19000,18500,19000,19000,19000,18800,19000,19000,19000,19500,19500,19500,19500,19500,20000,20000,20000,19650,20000,19700,22000,21000,20000,20500,21000,21000,21450,21440,21440,21440,21440,21440,21450,21500,21500,22000,22000,22000,22000,22000,22000,22000,20500,20600,21990,21900,21910,21900,21900,21450,21499,20500,21650,21350,21350,21100,21000,20000,20000,20500,20600,20600,20600,20250,20500,20600,20600,20000,21999,21600,21600,21600,21600,22000,21920,22000,22000,22000,22000,22000,24560,23000,23500,24500,24600,24600,24500,24490,24057]}
+};
+
+const newDataStore = [];
+
+function showTab(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+  if(name==='graficos') setTimeout(()=>renderCharts('BAI'),100);
+  if(name==='correlacao') setTimeout(renderACF,100);
+  if(name==='previsao') setTimeout(()=>updatePrevisao(),100);
+  if(name==='resultados') renderAsset('BAI');
+}
+
+function selAsset(key,el){
+  document.querySelectorAll('#tab-resultados .asset-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderAsset(key);
+}
+
+function renderAsset(key){
+  const d = ASSETS[key];
+  const se = (1/Math.sqrt(d.n)).toFixed(4);
+  const sig = v => Math.abs(v) > 1.96/Math.sqrt(d.n) ? '<span style="color:#f09595">***</span>' : '';
+  const arSig = d.ar.p < 0.05 ? '<span class="badge badge-red">SIGNIFICATIVO</span>' : '<span class="badge badge-green">Não significativo</span>';
+  const eff = (d.ar.p<0.05 || d.vr[2][2]<0.05) ? '<span class="badge badge-red">Ineficiente</span>' : '<span class="badge badge-green">Eficiente</span>';
+  
+  document.getElementById('asset-details').innerHTML = `
+    <div class="grid-4">
+      <div class="card"><div class="card-title">Observações</div><div class="card-val">${d.n}</div></div>
+      <div class="card"><div class="card-title">Retorno médio</div><div class="card-val">${(d.mean*100).toFixed(4)}%</div></div>
+      <div class="card"><div class="card-title">Desvio padrão</div><div class="card-val">${(d.std*100).toFixed(4)}%</div></div>
+      <div class="card"><div class="card-title">Conclusão</div><div class="card-val" style="font-size:14px">${eff}</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="sec-hdr">Estatísticas Descritivas</div>
+        <div class="info-row"><div class="info-label">Assimetria (Skewness)</div><div class="info-val">${d.skew.toFixed(4)}</div></div>
+        <div class="info-row"><div class="info-label">Curtose (Kurtosis)</div><div class="info-val">${d.kurt.toFixed(4)}</div></div>
+        <div class="info-row"><div class="info-label">Jarque-Bera</div><div class="info-val" style="color:#f09595">${d.jb.toFixed(2)} <span style="font-size:11px">(p≈0)</span></div></div>
+        <div class="info-row"><div class="info-label">Distribuição normal?</div><div class="info-val" style="color:#f09595">Rejeitada</div></div>
+
+        <div class="sec-hdr" style="margin-top:10px">Teste ADF — Retornos</div>
+        <div class="info-row"><div class="info-label">Estatística ADF</div><div class="info-val" style="color:#5DCAA5">${d.adf_stat.toFixed(4)}</div></div>
+        <div class="info-row"><div class="info-label">p-value</div><div class="info-val" style="color:#5DCAA5">${d.adf_pval.toFixed(3)}</div></div>
+        <div class="info-row"><div class="info-label">Estacionaridade</div><div class="info-val" style="color:#5DCAA5">Confirmada (|t|&gt;|crit 1%|)</div></div>
+
+        <div class="sec-hdr" style="margin-top:10px">Modelo AR(1)</div>
+        <div class="info-row"><div class="info-label">Coef. beta</div><div class="info-val">${d.ar.beta.toFixed(6)}</div></div>
+        <div class="info-row"><div class="info-label">Erro padrão</div><div class="info-val">${d.ar.se.toFixed(6)}</div></div>
+        <div class="info-row"><div class="info-label">t-estatística</div><div class="info-val">${d.ar.t.toFixed(4)}</div></div>
+        <div class="info-row"><div class="info-label">p-value</div><div class="info-val">${d.ar.p.toFixed(4)}</div></div>
+        <div class="info-row"><div class="info-label">R²</div><div class="info-val">${d.ar.r2.toFixed(6)}</div></div>
+        <div class="info-row"><div class="info-label">Durbin-Watson</div><div class="info-val">${d.ar.dw.toFixed(4)}</div></div>
+        <div class="info-row"><div class="info-label">Significância</div><div class="info-val">${arSig}</div></div>
+      </div>
+      <div class="card">
+        <div class="sec-hdr">Ljung-Box (Autocorrelação)</div>
+        ${[1,2,5,10].map(l=>{const r=d.lb[l];const c=r[1]<0.05?'#f09595':'#5DCAA5';return `<div class="info-row"><div class="info-label">Lag ${l} — Q=${r[0].toFixed(2)}</div><div class="info-val" style="color:${c}">p = ${r[1].toFixed(4)} ${r[1]<0.05?'✗':'✓'}</div></div>`}).join('')}
+
+        <div class="sec-hdr" style="margin-top:10px">Variance Ratio Test (Lo-MacKinlay)</div>
+        ${[2,4,8,16].map(q=>{const r=d.vr[q];const c=r[2]<0.05?'#f09595':'#5DCAA5';return `<div class="info-row"><div class="info-label">VR(${q}) = ${r[0].toFixed(4)}, z=${r[1].toFixed(4)}</div><div class="info-val" style="color:${c}">p = ${r[2].toFixed(4)} ${r[2]<0.05?'↠ Rejeita RW':'→ Não rejeita'}</div></div>`}).join('')}
+
+        <div class="sec-hdr" style="margin-top:10px">ACF — Coeficientes (SE = ±${se})</div>
+        ${d.acf.map((v,i)=>`<div class="info-row"><div class="info-label">Lag ${i+1}</div><div class="info-val" style="color:${Math.abs(v)>1.96/Math.sqrt(d.n)?'#f09595':'#9ca3af'}">${v.toFixed(4)} ${sig(v)}</div></div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+let priceC,retC,histC,volC;
+function renderCharts(key){
+  const d = ASSETS[key];
+  const prices = d.prices;
+  const n = prices.length;
+  const labels = prices.map((_,i)=>i+1);
+  const rets = prices.slice(1).map((p,i)=>Math.log(p/prices[i])*100);
+
+  if(priceC)priceC.destroy();
+  priceC = new Chart(document.getElementById('priceChart'),{type:'line',data:{labels,datasets:[{data:prices,borderColor:'#1D9E75',borderWidth:1.5,fill:false,pointRadius:0,tension:0.1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:false},y:{ticks:{color:'#6b7280',font:{size:11}},grid:{color:'#1a2433'}}}}});
+
+  if(retC)retC.destroy();
+  retC = new Chart(document.getElementById('retChart'),{type:'bar',data:{labels:labels.slice(1),datasets:[{data:rets,backgroundColor:rets.map(r=>r>0?'rgba(29,158,117,0.7)':'rgba(226,75,74,0.7)'),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:false},y:{ticks:{color:'#6b7280',font:{size:10},callback:v=>v.toFixed(1)+'%'},grid:{color:'#1a2433'}}}}});
+
+  const bins=20;const min=Math.min(...rets),max=Math.max(...rets),bw=(max-min)/bins;
+  const hist=Array(bins).fill(0);rets.forEach(r=>{let i=Math.min(Math.floor((r-min)/bw),bins-1);hist[i]++;});
+  const histLabels=Array.from({length:bins},(_,i)=>(min+i*bw).toFixed(1));
+  if(histC)histC.destroy();
+  histC = new Chart(document.getElementById('histChart'),{type:'bar',data:{labels:histLabels,datasets:[{data:hist,backgroundColor:'rgba(55,138,221,0.7)',borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6b7280',font:{size:9},maxRotation:45}},y:{ticks:{color:'#6b7280',font:{size:10}},grid:{color:'#1a2433'}}}}});
+
+  const yearData={2022:[],2023:[],2024:[],2025:[]};
+  const baseDate=new Date(2022,5,13);
+  prices.forEach((p,i)=>{const d=new Date(baseDate.getTime()+i*7*24*3600*1000);const y=d.getFullYear();if(yearData[y])yearData[y].push(p);});
+  const avgByYear=Object.entries(yearData).filter(([y,arr])=>arr.length>0).map(([y,arr])=>({y,avg:arr.reduce((a,b)=>a+b,0)/arr.length}));
+  if(volC)volC.destroy();
+  volC = new Chart(document.getElementById('volChart'),{type:'bar',data:{labels:avgByYear.map(e=>e.y),datasets:[{data:avgByYear.map(e=>Math.round(e.avg)),backgroundColor:['rgba(55,138,221,0.7)','rgba(29,158,117,0.7)','rgba(239,159,39,0.7)','rgba(226,75,74,0.7)'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6b7280'}},y:{ticks:{color:'#6b7280',font:{size:10},callback:v=>(v/1000).toFixed(0)+'K'},grid:{color:'#1a2433'}}}}});
+}
+
+function selChart(key,el){
+  document.querySelectorAll('#tab-graficos .asset-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderCharts(key);
+}
+
+let acfCharts={};
+function renderACF(){
+  const cols={BAI:'#378ADD',BCG:'#1D9E75',BDV:'#EF9F27',ENS:'#E24B4A'};
+  ['BAI','BCG','BDV','ENS'].forEach(key=>{
+    const d=ASSETS[key];
+    const se=1.96/Math.sqrt(d.n);
+    const id='acf'+key;
+    if(acfCharts[key])acfCharts[key].destroy();
+    acfCharts[key]=new Chart(document.getElementById(id),{
+      type:'bar',
+      data:{labels:[1,2,3,4,5,6,7,8,9,10],datasets:[
+        {data:d.acf,backgroundColor:d.acf.map(v=>Math.abs(v)>se?cols[key]+'cc':'rgba(100,100,120,0.5)'),borderWidth:0},
+        {type:'line',data:Array(10).fill(se),borderColor:'rgba(226,75,74,0.5)',borderDash:[4,4],borderWidth:1,pointRadius:0},
+        {type:'line',data:Array(10).fill(-se),borderColor:'rgba(226,75,74,0.5)',borderDash:[4,4],borderWidth:1,pointRadius:0}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6b7280',font:{size:10}}},y:{min:-0.35,max:0.35,ticks:{color:'#6b7280',font:{size:9},callback:v=>v.toFixed(2)},grid:{color:'#1a2433'}}}}
+    });
+  });
+
+  const vrC=document.getElementById('vrChart');
+  if(window.vrChart2)window.vrChart2.destroy();
+  window.vrChart2=new Chart(vrC,{type:'line',data:{labels:['VR(2)','VR(4)','VR(8)','VR(16)'],datasets:[
+    {label:'BAI',data:[0.778,0.629,0.651,0.532],borderColor:'#378ADD',fill:false,tension:0.3,borderWidth:2,pointRadius:4},
+    {label:'BCG',data:[0.993,0.947,0.784,0.652],borderColor:'#1D9E75',fill:false,tension:0.3,borderWidth:2,pointRadius:4},
+    {label:'BDV',data:[0.785,0.538,0.293,0.173],borderColor:'#EF9F27',fill:false,tension:0.3,borderWidth:2,pointRadius:4},
+    {label:'ENS',data:[0.724,0.330,0.296,0.209],borderColor:'#E24B4A',fill:false,tension:0.3,borderWidth:2,pointRadius:4},
+    {label:'VR=1 (eficiência)',data:[1,1,1,1],borderColor:'rgba(255,255,255,0.3)',borderDash:[6,4],fill:false,borderWidth:1.5,pointRadius:0}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9ca3af',font:{size:11}}}},scales:{x:{ticks:{color:'#6b7280'}},y:{min:0,max:1.2,ticks:{color:'#6b7280',callback:v=>v.toFixed(2)},grid:{color:'#1a2433'}}}}});
+}
+
+let prevChart;
+function updatePrevisao(){
+  const key=document.getElementById('prevAsset').value.replace('AAAAA','');
+  const d=ASSETS[key];
+  const prices=d.prices;
+  const last=prices[prices.length-1];
+  const lastRet=Math.log(last/prices[prices.length-2]);
+  const predRet=d.ar.ar_alpha||0 + d.ar.beta*lastRet;
+  const predPrice=Math.round(last*Math.exp(predRet));
+
+  document.getElementById('lastPrice').textContent=last.toLocaleString()+' AOA';
+  document.getElementById('arBeta').textContent=d.ar.beta.toFixed(6);
+  document.getElementById('arPval').textContent=d.ar.p<0.001?'< 0.001':d.ar.p.toFixed(4);
+  document.getElementById('prevRet').textContent=(predRet*100).toFixed(4)+'%';
+  document.getElementById('prevPrice').textContent=predPrice.toLocaleString()+' AOA';
+
+  const last30=prices.slice(-30);
+  const prevLabels=[...last30.map((_,i)=>'t-'+(29-i)),'t+1'];
+  const prevData=[...last30,predPrice];
+  const bgColors=prevLabels.map((l,i)=>i<30?'rgba(55,138,221,0.8)':'rgba(239,159,39,0.9)');
+
+  if(prevChart)prevChart.destroy();
+  prevChart=new Chart(document.getElementById('prevChart'),{
+    type:'bar',
+    data:{labels:prevLabels,datasets:[{data:prevData,backgroundColor:bgColors,borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6b7280',font:{size:9},maxRotation:45,autoSkip:true,maxTicksLimit:10}},y:{ticks:{color:'#6b7280',font:{size:9},callback:v=>(v/1000).toFixed(0)+'K'},grid:{color:'#1a2433'}}}}
+  });
+}
+
+function addData(){
+  const asset=document.getElementById('newAsset').value;
+  const date=document.getElementById('newDate').value;
+  const price=parseFloat(document.getElementById('newPrice').value);
+  const neg=parseInt(document.getElementById('newNeg').value)||0;
+
+  if(!date||isNaN(price)||price<=0){
+    document.getElementById('addedData').textContent='Por favor preencha a data e o preço corretamente.';
+    document.getElementById('addedData').style.color='#f09595';
+    return;
+  }
+
+  const key=asset.replace('AAAAA','');
+  const prices=ASSETS[key].prices;
+  const lastP=prices[prices.length-1];
+  const logRet=Math.log(price/lastP);
+  prices.push(price);
+
+  newDataStore.push({asset,date,price,logRet,neg});
+  document.getElementById('addedData').textContent=`Adicionado: ${asset} | ${date} | ${price.toLocaleString()} AOA | Rt = ${(logRet*100).toFixed(4)}%`;
+  document.getElementById('addedData').style.color='#5DCAA5';
+
+  const tbody=document.querySelector('#newDataTable tbody');
+  if(newDataStore.length===1)tbody.innerHTML='';
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td>${asset}</td><td>${date}</td><td>${price.toLocaleString()}</td><td style="color:${logRet>0?'#5DCAA5':'#f09595'}">${(logRet*100).toFixed(4)}%</td><td>${neg}</td>`;
+  tbody.appendChild(tr);
+
+  document.getElementById('newPrice').value='';
+  document.getElementById('newNeg').value='';
+}
+
+renderAsset('BAI');
+</script>
